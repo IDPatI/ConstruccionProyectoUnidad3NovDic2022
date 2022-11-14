@@ -1,14 +1,5 @@
 package cons_u3_pf;
 
-<<<<<<< HEAD
-import org.junit.Test;
-
-public class Pruebas {
-    @Test
-    public void prueba1(){
-        
-    }
-=======
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -35,5 +26,4 @@ public class Pruebas {
         assertTrue(Validaciones.validarFormato(json));
     } 
 
->>>>>>> feature-Lectura-validacion
 }
