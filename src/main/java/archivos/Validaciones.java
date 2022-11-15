@@ -1,5 +1,7 @@
 package archivos;
 
+import javax.swing.text.TabExpander;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -11,6 +13,10 @@ public class Validaciones {
 
     public static boolean validarFormato(String json){
         JSONObject objeto = new JSONObject(json);
+        return validarFormato(objeto);
+    }
+
+    public static boolean validarFormato(JSONObject objeto){
         JSONObject trabajadores =  objeto.getJSONObject("employees");
         JSONArray trabajador =  trabajadores.getJSONArray("employee");
         for(int i = 0; i < trabajador.length();i++){
@@ -20,14 +26,6 @@ public class Validaciones {
             String photo = ((JSONObject)trabajador.get(i)).getString("photo");
 
         }
-        System.out.println(trabajador);
-        return true;
-    }
-
-    public static boolean validarFormato(JSONObject objeto){
-        JSONObject trabajadores =  objeto.getJSONObject("employees");
-        JSONArray trabajador =  trabajadores.getJSONArray("employee");
-        System.out.println(trabajador);
         return true;
     }
 }
