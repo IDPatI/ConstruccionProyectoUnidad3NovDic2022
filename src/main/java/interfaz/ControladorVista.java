@@ -10,8 +10,13 @@ import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
+import archivos.JsonParser;
+import archivos.LectorArchivos;
+import archivos.Validaciones;
+
 public class ControladorVista  implements ActionListener{
     private VistaDatos vista;
+    private String archivoCargado;
 
     public ControladorVista() {
         vista = new VistaDatos();
@@ -19,7 +24,7 @@ public class ControladorVista  implements ActionListener{
         vista.getBotonMostrar().addActionListener(this);
         vista.getBotonLimpiar().addActionListener(this);
         vista.getBotonCargar().addActionListener(this);
-
+        archivoCargado = "";
     }
 
     public String seleccionarRuta(){
@@ -36,13 +41,29 @@ public class ControladorVista  implements ActionListener{
         }
     }
 
+    public void actualizarTabla(){
+        String contenido="";
+        try {
+        contenido = LectorArchivos.ObtenerContenido(archivoCargado);
+        } catch (Exception e) {
+        }
+        Object[][] tabla = JsonParser.empleados(contenido);
+        DefaultTableModel dtm = (DefaultTableModel)vista.getTablaEmp().getModel();
+        dtm.setRowCount(0);
+        for (Object[] object : tabla) {
+            dtm.addRow(object);
+        }
+    }
+
     @Override
     public void actionPerformed(ActionEvent e) {
         if(e.getSource() == vista.getBotonMostrar()) {
-            Object[][] datos = {{2342,"Robert","Downey","FOTO"},{5363,"David","Pat","FOTO"}};
-            DefaultTableModel dtm = (DefaultTableModel)vista.getTablaEmp().getModel();
-            dtm.addRow(datos[0]);
-            dtm.addRow(datos[1]);
+            if(archivoCargado.equals("")){
+                JOptionPane.showMessageDialog(null, "No se a cargado ningun archivo","Aviso", JOptionPane.INFORMATION_MESSAGE);
+                return;
+            }else{
+                actualizarTabla();
+            }
         }
 
         if(e.getSource() == vista.getBotonLimpiar()) {
@@ -52,10 +73,29 @@ public class ControladorVista  implements ActionListener{
 
         if(e.getSource() == vista.getBotonCargar()) {
             String ruta = seleccionarRuta();
-            DefaultTableModel dtm = (DefaultTableModel)vista.getTablaEmp().getModel();
-            JOptionPane.showMessageDialog(null, ruta,"éxito!", JOptionPane.INFORMATION_MESSAGE);
+            if(!validar(ruta)){
+                return;
+            }
+            archivoCargado = ruta;
+            actualizarTabla();
         }
         
+    }
+
+    public boolean validar(String ruta){
+        if(!Validaciones.validarExJSON(ruta)){
+            JOptionPane.showMessageDialog(null, "No es un archivo JSON","error", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+        try {
+            if(!Validaciones.validarFormato(LectorArchivos.ObtenerContenido(ruta))){
+                JOptionPane.showMessageDialog(null, "No tiene el formato adecuado","Formato", JOptionPane.ERROR_MESSAGE);
+                return false;
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "El archivo no pudo ser encontrado","Archivo no encontrado", JOptionPane.INFORMATION_MESSAGE);
+        }
+        return true;
     }
     
     public static void main(String[] args) {
