@@ -52,6 +52,7 @@ public class ControladorVista  implements ActionListener{
 
         if(e.getSource() == vista.getBotonCargar()) {
             String ruta = seleccionarRuta();
+            DefaultTableModel dtm = (DefaultTableModel)vista.getTablaEmp().getModel();
             JOptionPane.showMessageDialog(null, ruta,"éxito!", JOptionPane.INFORMATION_MESSAGE);
         }
         
