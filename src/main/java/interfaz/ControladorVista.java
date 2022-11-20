@@ -16,6 +16,7 @@ import archivos.Validaciones;
 
 public class ControladorVista  implements ActionListener{
     private VistaDatos vista;
+    private VistaEditar vistaEditar;
     private String archivoCargado;
 
     public ControladorVista() {
@@ -24,6 +25,7 @@ public class ControladorVista  implements ActionListener{
         vista.getBotonMostrar().addActionListener(this);
         vista.getBotonLimpiar().addActionListener(this);
         vista.getBotonCargar().addActionListener(this);
+        vista.getBotonEditar().addActionListener(this);
         archivoCargado = "";
     }
 
@@ -55,6 +57,46 @@ public class ControladorVista  implements ActionListener{
         }
     }
 
+    public boolean validar(String ruta){
+        if(!Validaciones.validarExJSON(ruta)){
+            JOptionPane.showMessageDialog(null, "No es un archivo JSON","error", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+        try {
+            if(!Validaciones.validarFormato(LectorArchivos.ObtenerContenido(ruta))){
+                JOptionPane.showMessageDialog(null, "No tiene el formato adecuado","Formato", JOptionPane.ERROR_MESSAGE);
+                return false;
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "El archivo no pudo ser encontrado","Archivo no encontrado", JOptionPane.INFORMATION_MESSAGE);
+        }
+        return true;
+    }
+
+    public void rellenarTablaEditar(DefaultTableModel dtm, VistaEditar vista) {
+        DefaultTableModel modelo = (DefaultTableModel)vista.getTablaModif().getModel();
+        modelo.setRowCount(0);
+        for(int i = 0; i < dtm.getRowCount(); i++) {
+            Object[] row = new String[4];
+            for (int j = 0; j < 4; j++) {
+                row[j] = dtm.getValueAt(i, j);
+            }
+            modelo.addRow(row);
+        }
+    }
+
+    public void rellenarTablaEmp(DefaultTableModel dtm, VistaDatos vista) {
+        DefaultTableModel modelo = (DefaultTableModel)vista.getTablaEmp().getModel();
+        modelo.setRowCount(0);
+        for(int i = 0; i < dtm.getRowCount(); i++) {
+            Object[] row = new String[4];
+            for (int j = 0; j < 4; j++) {
+                row[j] = dtm.getValueAt(i, j);
+            }
+            modelo.addRow(row);
+        }
+    }
+
     @Override
     public void actionPerformed(ActionEvent e) {
         if(e.getSource() == vista.getBotonMostrar()) {
@@ -79,23 +121,46 @@ public class ControladorVista  implements ActionListener{
             archivoCargado = ruta;
             actualizarTabla();
         }
-        
-    }
 
-    public boolean validar(String ruta){
-        if(!Validaciones.validarExJSON(ruta)){
-            JOptionPane.showMessageDialog(null, "No es un archivo JSON","error", JOptionPane.ERROR_MESSAGE);
-            return false;
-        }
-        try {
-            if(!Validaciones.validarFormato(LectorArchivos.ObtenerContenido(ruta))){
-                JOptionPane.showMessageDialog(null, "No tiene el formato adecuado","Formato", JOptionPane.ERROR_MESSAGE);
-                return false;
+        if(e.getSource() == vista.getBotonEditar()) {
+            if(archivoCargado.equals("")){
+                JOptionPane.showMessageDialog(null, "No se a cargado ningun archivo","Aviso", JOptionPane.INFORMATION_MESSAGE);
+                return;
+            }else{
+                vistaEditar = new VistaEditar();
+                vistaEditar.setVisible(true);
+                vistaEditar.getBotonCancelar().addActionListener(this);
+                vistaEditar.getBotonActualizar().addActionListener(this);
+                DefaultTableModel dtm = (DefaultTableModel)vista.getTablaEmp().getModel();
+                rellenarTablaEditar(dtm, vistaEditar);
             }
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "El archivo no pudo ser encontrado","Archivo no encontrado", JOptionPane.INFORMATION_MESSAGE);
         }
-        return true;
+
+        if(e.getSource() == vistaEditar.getBotonCancelar()) {
+            vistaEditar.dispose();
+        }
+
+        if(e.getSource() == vistaEditar.getBotonActualizar()) {
+            String[] opciones = {"Actualizar Tabla", "Actualizar JSON", "Cancelar"};
+            int x = JOptionPane.showOptionDialog(null, "¿Que quieres actualizar?",
+                "Elige una opción",
+                JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, opciones, opciones[0]);
+            switch(x) {
+                case 0:
+                    DefaultTableModel dtm = (DefaultTableModel)vistaEditar.getTablaModif().getModel();
+                    rellenarTablaEmp(dtm, vista);
+                    vistaEditar.dispose();
+                    break;
+                case 1:
+                    System.out.println("Escojiste actualizar JSON");
+                    break;
+                case 2:
+                    break;
+                default:
+                    break;
+            }
+        }
+        
     }
     
     public static void main(String[] args) {
