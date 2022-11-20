@@ -1,20 +1,23 @@
 package interfaz;
 
+import javax.print.DocFlavor.STRING;
 import javax.swing.JButton;
 import javax.swing.JTextField;
+import javax.swing.WindowConstants;
 
 /**
  *
  * @author braul
  */
 public class VistaModificar extends javax.swing.JFrame {
-
+    private String id;
     /**
      * Creates new form VistaModificar
      */
     public VistaModificar() {
         initComponents();
         this.setLocationRelativeTo(null);
+        this.setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
     }
 
     /**
@@ -25,7 +28,7 @@ public class VistaModificar extends javax.swing.JFrame {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">                          
     private void initComponents() {
-
+        
         tituloTabla = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
         jLabel1 = new javax.swing.JLabel();
@@ -169,20 +172,31 @@ public class VistaModificar extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JLabel tituloTabla;
-    private int filaSeleccionada;
     // End of variables declaration                   
     
     
-    public JTextField getNombre() {
-        return fieldNombre;
+    public String getNombre() {
+        return fieldNombre.getText();
+    }
+    public void setNombre(String nombre) {
+        fieldNombre.setText(nombre);
+        System.out.println("SetNombre: "+ nombre);
+    }
+
+    
+    public String getApellido() {
+        return fieldApellido.getText();
+    }
+    public void setApellido(String apellido){
+        fieldApellido.setText(apellido);
     }
     
-    public JTextField getApellido() {
-        return fieldApellido;
+    public String getFoto() {
+        return fieldFoto.getText();
     }
-    
-    public JTextField getFoto() {
-        return fieldFoto;
+
+    public void setFoto(String photo){
+        fieldFoto.setText(photo);
     }
     
     public JButton getBotonCancelar() {
@@ -193,16 +207,13 @@ public class VistaModificar extends javax.swing.JFrame {
         return botonActualizar;
     }
     
-    public void setFilaSeleccionada(int x) {
-        this.filaSeleccionada = x;
+    public void setIdTitulo(String id) {
+        this.id = id;
+        tituloTabla.setText("Actualizar empleado| Id: " + id);
     }
 
-    public int getFilaSeleccionada() {
-        return this.filaSeleccionada;
-    }
-    
-    public void setIdTitulo(String id) {
-        tituloTabla.setText("Actualizar empleado con Id " + id);
+    public String getId(){
+        return this.id;
     }
     
     

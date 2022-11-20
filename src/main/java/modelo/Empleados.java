@@ -37,7 +37,7 @@ public class Empleados {
         }
     }
 
-    public void modificarEmpleado(String id,String firstName, String lastName, String photo ) throws IOException{
+    public static void modificarEmpleado(String id,String firstName, String lastName, String photo ) throws IOException{
         Empleado empleadoM = empleados.get(id);
         empleadoM.firstName = firstName;
         empleadoM.lastName = lastName;
@@ -46,6 +46,11 @@ public class Empleados {
         jsonEmpleados  = JsonParser.jsonEmpleados();
         ModificadorArchivo.guardar(archivoEmpleados, jsonEmpleados.toString());
     }
+
+    public static Empleado get(String id){
+        return empleados.get(id);
+    }
+
 
     private static JSONArray getListaEmpleados(){
         return jsonEmpleados.getJSONObject("employees").getJSONArray("employee");

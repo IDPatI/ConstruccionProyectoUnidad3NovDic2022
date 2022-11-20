@@ -3,6 +3,7 @@ package interfaz;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.Scanner;
 
 import javax.swing.JFileChooser;
@@ -18,12 +19,12 @@ import modelo.Empleado;
 import modelo.Empleados;
 
 public class ControladorVista  implements ActionListener{
-    private VistaDatos vista;
+    public static VistaDatos vista;
     private VistaModificar vistaModif;
-    private String archivoCargado;
 
     public ControladorVista() {
         vista = new VistaDatos();
+        vistaModif = new VistaModificar();
         vista.setVisible(true);
         vista.getBotonMostrar().addActionListener(this);
         vista.getBotonLimpiar().addActionListener(this);
@@ -31,7 +32,7 @@ public class ControladorVista  implements ActionListener{
         vista.getBotonEditar().addActionListener(this);
         Empleados.archivoEmpleados = "";
     }
-
+    //Metodos de la pantalla principal
     public String seleccionarRuta(){
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.showOpenDialog(fileChooser);
@@ -45,7 +46,7 @@ public class ControladorVista  implements ActionListener{
             return "error";
         }
     }
-
+    
     public void actualizarTabla(){
         Object[][] tabla = JsonParser.empleados(Empleados.jsonEmpleados);
         DefaultTableModel dtm = (DefaultTableModel)vista.getTablaEmp().getModel();
@@ -70,32 +71,12 @@ public class ControladorVista  implements ActionListener{
         }
         return true;
     }
-
-    public void inicializarVistaModif() {
-        int filaSeleccionada = vista.getTablaEmp().getSelectedRow();
-        if(filaSeleccionada != -1) {
-            vistaModif = new VistaModificar();
-            vistaModif.setVisible(true);
-            vistaModif.getBotonCancelar().addActionListener(this);
-            vistaModif.getBotonActualizar().addActionListener(this);
-            vistaModif.setFilaSeleccionada(filaSeleccionada);
-            vistaModif.setIdTitulo(String.valueOf(filaSeleccionada + 1));
-        } else {
-            JOptionPane.showMessageDialog(null, "Debes seleccionar una fila primero","Aviso", JOptionPane.INFORMATION_MESSAGE);
-        }
-        
-    }
-
-    public void actualizarFila(String id, String nombre, String apellido, String foto, int fila) {
-        DefaultTableModel dtm = (DefaultTableModel)vista.getTablaEmp().getModel();
-        dtm.setValueAt(id, fila, 0);
-        dtm.setValueAt(nombre, fila, 1);
-        dtm.setValueAt(apellido, fila, 2);
-        dtm.setValueAt(foto, fila, 3);
-    }
+    //--------------
 
     @Override
     public void actionPerformed(ActionEvent e) {
+
+        //Ver empleados, Acciones de la pantalla principal
         if(e.getSource() == vista.getBotonMostrar()) {
             if(Empleados.archivoEmpleados.equals("")){
                 JOptionPane.showMessageDialog(null, "No se a cargado ningun archivo","Aviso", JOptionPane.INFORMATION_MESSAGE);
@@ -122,6 +103,7 @@ public class ControladorVista  implements ActionListener{
             actualizarTabla();
         }
 
+        //Modificar, Acciones de la ventana Modificar
         if(e.getSource() == vista.getBotonEditar()) {
             if(Empleados.archivoEmpleados.equals("")){
                 JOptionPane.showMessageDialog(null, "No se a cargado ningun archivo","Aviso", JOptionPane.INFORMATION_MESSAGE);
@@ -136,18 +118,67 @@ public class ControladorVista  implements ActionListener{
         }
 
         if(e.getSource() == vistaModif.getBotonActualizar()) {
-            String fieldNombre = vistaModif.getNombre().getText();
-            String fieldApellido = vistaModif.getApellido().getText();
-            String fieldFoto = vistaModif.getFoto().getText();
-            if((fieldNombre.equals("") || fieldApellido.equals("") || fieldFoto.equals("")) == true) {
-                JOptionPane.showMessageDialog(null, "Alguno de los campos esta vacío","Aviso", JOptionPane.INFORMATION_MESSAGE);
-            } else {
-                actualizarFila(String.valueOf(vistaModif.getFilaSeleccionada() + 1), fieldNombre, fieldApellido, fieldFoto, vistaModif.getFilaSeleccionada());
-                vistaModif.dispose();
-            }
+            modificarAccion();
         }
         
     }
+
+
+    //Metodos Modificar
+
+    public void inicializarVistaModif() {
+        int filaSeleccionada = vista.getTablaEmp().getSelectedRow();
+
+
+        if(filaSeleccionada != -1) {
+            String id = (String)vista.getTablaEmp().getValueAt(filaSeleccionada, 0);
+            Empleado actual = Empleados.get(id);
+            System.out.println(actual);
+            vistaModif.setNombre(actual.firstName);
+            vistaModif.setApellido(actual.lastName);
+            vistaModif.setFoto(actual.photo);
+            vistaModif.setVisible(true);
+            vistaModif.getBotonCancelar().addActionListener(this);
+            vistaModif.getBotonActualizar().addActionListener(this);
+            vistaModif.setIdTitulo(id);
+        } else {
+            JOptionPane.showMessageDialog(null, "Debes seleccionar una fila primero","Aviso", JOptionPane.INFORMATION_MESSAGE);
+        }
+        
+    }
+
+    public void modificarAccion(){
+        String fieldNombre = vistaModif.getNombre();
+        String fieldApellido = vistaModif.getApellido();
+        String fieldFoto = vistaModif.getFoto();
+        if(verificarCamposModificar()) {
+            try {
+                Empleados.modificarEmpleado(vistaModif.getId(), fieldNombre, fieldApellido, fieldFoto);
+            } catch (IOException e1) {
+            }
+            actualizarTabla();
+            vistaModif.dispose();
+        } else {
+            return;
+        }
+    }
+
+
+    public boolean verificarCamposModificar(){
+        String fieldNombre = vistaModif.getNombre();
+        String fieldApellido = vistaModif.getApellido();
+        String fieldFoto = vistaModif.getFoto(); 
+        if((fieldNombre.equals("") || fieldApellido.equals("") || fieldFoto.equals("")) == true){
+            JOptionPane.showMessageDialog(null, "Alguno de los campos esta vacío","Aviso", JOptionPane.INFORMATION_MESSAGE);
+            return false;
+        }else{
+            return true;
+        }
+    }
+
+
+
+
     
     public static void main(String[] args) {
         ControladorVista controlador = new ControladorVista();
