@@ -55,7 +55,7 @@ public class VistaDatos extends javax.swing.JFrame {
 
             },
             new String [] {
-                "ID", "First Name", "Last Name", "Foto"
+                "ID", "Nombre", "Apellido", "Foto"
             }
         ) {
             boolean[] canEdit = new boolean [] {

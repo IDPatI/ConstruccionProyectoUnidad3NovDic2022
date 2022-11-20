@@ -8,6 +8,7 @@ import java.util.Scanner;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
+import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
 import archivos.JsonParser;
@@ -16,7 +17,7 @@ import archivos.Validaciones;
 
 public class ControladorVista  implements ActionListener{
     private VistaDatos vista;
-    private VistaEditar vistaEditar;
+    private VistaModificar vistaModif;
     private String archivoCargado;
 
     public ControladorVista() {
@@ -73,28 +74,26 @@ public class ControladorVista  implements ActionListener{
         return true;
     }
 
-    public void rellenarTablaEditar(DefaultTableModel dtm, VistaEditar vista) {
-        DefaultTableModel modelo = (DefaultTableModel)vista.getTablaModif().getModel();
-        modelo.setRowCount(0);
-        for(int i = 0; i < dtm.getRowCount(); i++) {
-            Object[] row = new String[4];
-            for (int j = 0; j < 4; j++) {
-                row[j] = dtm.getValueAt(i, j);
-            }
-            modelo.addRow(row);
+    public void inicializarVistaModif() {
+        int filaSeleccionada = vista.getTablaEmp().getSelectedRow();
+        if(filaSeleccionada != -1) {
+            vistaModif = new VistaModificar();
+            vistaModif.setVisible(true);
+            vistaModif.getBotonCancelar().addActionListener(this);
+            vistaModif.getBotonActualizar().addActionListener(this);
+            vistaModif.setFilaSeleccionada(filaSeleccionada);
+        } else {
+            JOptionPane.showMessageDialog(null, "Debes seleccionar una fila primero","Aviso", JOptionPane.INFORMATION_MESSAGE);
         }
+        
     }
 
-    public void rellenarTablaEmp(DefaultTableModel dtm, VistaDatos vista) {
-        DefaultTableModel modelo = (DefaultTableModel)vista.getTablaEmp().getModel();
-        modelo.setRowCount(0);
-        for(int i = 0; i < dtm.getRowCount(); i++) {
-            Object[] row = new String[4];
-            for (int j = 0; j < 4; j++) {
-                row[j] = dtm.getValueAt(i, j);
-            }
-            modelo.addRow(row);
-        }
+    public void actualizarFila(String id, String nombre, String apellido, String foto, int fila) {
+        DefaultTableModel dtm = (DefaultTableModel)vista.getTablaEmp().getModel();
+        dtm.setValueAt(id, fila, 0);
+        dtm.setValueAt(nombre, fila, 1);
+        dtm.setValueAt(apellido, fila, 2);
+        dtm.setValueAt(foto, fila, 3);
     }
 
     @Override
@@ -127,37 +126,24 @@ public class ControladorVista  implements ActionListener{
                 JOptionPane.showMessageDialog(null, "No se a cargado ningun archivo","Aviso", JOptionPane.INFORMATION_MESSAGE);
                 return;
             }else{
-                vistaEditar = new VistaEditar();
-                vistaEditar.setVisible(true);
-                vistaEditar.getBotonCancelar().addActionListener(this);
-                vistaEditar.getBotonActualizar().addActionListener(this);
-                DefaultTableModel dtm = (DefaultTableModel)vista.getTablaEmp().getModel();
-                rellenarTablaEditar(dtm, vistaEditar);
+                inicializarVistaModif();
             }
         }
 
-        if(e.getSource() == vistaEditar.getBotonCancelar()) {
-            vistaEditar.dispose();
+        if(e.getSource() == vistaModif.getBotonCancelar()) {
+            vistaModif.dispose();
         }
 
-        if(e.getSource() == vistaEditar.getBotonActualizar()) {
-            String[] opciones = {"Actualizar Tabla", "Actualizar JSON", "Cancelar"};
-            int x = JOptionPane.showOptionDialog(null, "¿Que quieres actualizar?",
-                "Elige una opción",
-                JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, opciones, opciones[0]);
-            switch(x) {
-                case 0:
-                    DefaultTableModel dtm = (DefaultTableModel)vistaEditar.getTablaModif().getModel();
-                    rellenarTablaEmp(dtm, vista);
-                    vistaEditar.dispose();
-                    break;
-                case 1:
-                    System.out.println("Escojiste actualizar JSON");
-                    break;
-                case 2:
-                    break;
-                default:
-                    break;
+        if(e.getSource() == vistaModif.getBotonActualizar()) {
+            String fieldId = vistaModif.getId().getText();
+            String fieldNombre = vistaModif.getNombre().getText();
+            String fieldApellido = vistaModif.getApellido().getText();
+            String fieldFoto = vistaModif.getFoto().getText();
+            if((fieldId.equals("") || fieldNombre.equals("") || fieldApellido.equals("") || fieldFoto.equals("")) == true) {
+                JOptionPane.showMessageDialog(null, "Alguno de los campos esta vacío","Aviso", JOptionPane.INFORMATION_MESSAGE);
+            } else {
+                actualizarFila(fieldId, fieldNombre, fieldApellido, fieldFoto, vistaModif.getFilaSeleccionada());
+                vistaModif.dispose();
             }
         }
         
