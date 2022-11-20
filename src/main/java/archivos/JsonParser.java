@@ -1,7 +1,15 @@
 package archivos;
 
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.Set;
+
+
 import org.json.JSONArray;
 import org.json.JSONObject;
+
+import modelo.Empleado;
+import modelo.Empleados;
 
 public class JsonParser {
     
@@ -26,5 +34,39 @@ public class JsonParser {
         }
         return regresar;
     }
+
+    public static JSONObject jsonEmpleados(){
+        JSONArray arregloE = new JSONArray();
+
+        Set llavesS = Empleados.empleados.keySet();
+        Collection<Empleado> EmpleadosAlterno = Empleados.empleados.values();
+
+        Iterator<Empleado> lista = EmpleadosAlterno.iterator();
+        Iterator<String> llaves = llavesS.iterator();
+
+        while(llaves.hasNext()){
+            JSONObject empleadoA = new JSONObject();
+            empleadoA.put("id", llaves.next());
+
+            Empleado empleadoES = lista.next();
+            empleadoA.put("firstName", empleadoES.firstName);
+            empleadoA.put("lastName", empleadoES.lastName);
+            empleadoA.put("photo", empleadoES.photo);
+            arregloE.put(empleadoA);
+        }
+
+        JSONObject preRegreso = new JSONObject();
+        preRegreso.put("employee", arregloE);
+
+        JSONObject regresar = new JSONObject();
+        regresar.put("employees", preRegreso);
+
+        return regresar;
+        
+
+    }
+
+    
+
 
 }
