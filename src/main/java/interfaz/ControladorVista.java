@@ -21,6 +21,7 @@ public class ControladorVista  implements ActionListener{
 
     public ControladorVista() {
         vista = new VistaDatos();
+        vistaEditar = new VistaEditar();
         vista.setVisible(true);
         vista.getBotonMostrar().addActionListener(this);
         vista.getBotonLimpiar().addActionListener(this);
@@ -127,7 +128,6 @@ public class ControladorVista  implements ActionListener{
                 JOptionPane.showMessageDialog(null, "No se a cargado ningun archivo","Aviso", JOptionPane.INFORMATION_MESSAGE);
                 return;
             }else{
-                vistaEditar = new VistaEditar();
                 vistaEditar.setVisible(true);
                 vistaEditar.getBotonCancelar().addActionListener(this);
                 vistaEditar.getBotonActualizar().addActionListener(this);
@@ -141,7 +141,7 @@ public class ControladorVista  implements ActionListener{
         }
 
         if(e.getSource() == vistaEditar.getBotonActualizar()) {
-            String[] opciones = {"Actualizar Tabla", "Actualizar JSON", "Cancelar"};
+            String[] opciones = {"Actualizar", "Cancelar"};
             int x = JOptionPane.showOptionDialog(null, "¿Que quieres actualizar?",
                 "Elige una opción",
                 JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, opciones, opciones[0]);
@@ -152,9 +152,6 @@ public class ControladorVista  implements ActionListener{
                     vistaEditar.dispose();
                     break;
                 case 1:
-                    System.out.println("Escojiste actualizar JSON");
-                    break;
-                case 2:
                     break;
                 default:
                     break;
