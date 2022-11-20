@@ -14,6 +14,8 @@ import javax.swing.table.DefaultTableModel;
 import archivos.JsonParser;
 import archivos.LectorArchivos;
 import archivos.Validaciones;
+import modelo.Empleado;
+import modelo.Empleados;
 
 public class ControladorVista  implements ActionListener{
     private VistaDatos vista;
@@ -27,7 +29,7 @@ public class ControladorVista  implements ActionListener{
         vista.getBotonLimpiar().addActionListener(this);
         vista.getBotonCargar().addActionListener(this);
         vista.getBotonEditar().addActionListener(this);
-        archivoCargado = "";
+        Empleados.archivoEmpleados = "";
     }
 
     public String seleccionarRuta(){
@@ -45,12 +47,7 @@ public class ControladorVista  implements ActionListener{
     }
 
     public void actualizarTabla(){
-        String contenido="";
-        try {
-        contenido = LectorArchivos.ObtenerContenido(archivoCargado);
-        } catch (Exception e) {
-        }
-        Object[][] tabla = JsonParser.empleados(contenido);
+        Object[][] tabla = JsonParser.empleados(Empleados.jsonEmpleados);
         DefaultTableModel dtm = (DefaultTableModel)vista.getTablaEmp().getModel();
         dtm.setRowCount(0);
         for (Object[] object : tabla) {
@@ -99,7 +96,7 @@ public class ControladorVista  implements ActionListener{
     @Override
     public void actionPerformed(ActionEvent e) {
         if(e.getSource() == vista.getBotonMostrar()) {
-            if(archivoCargado.equals("")){
+            if(Empleados.archivoEmpleados.equals("")){
                 JOptionPane.showMessageDialog(null, "No se a cargado ningun archivo","Aviso", JOptionPane.INFORMATION_MESSAGE);
                 return;
             }else{
@@ -117,12 +114,15 @@ public class ControladorVista  implements ActionListener{
             if(!validar(ruta)){
                 return;
             }
-            archivoCargado = ruta;
+            try {
+                Empleados em = new Empleados(ruta);
+            } catch (Exception e1) {
+            }
             actualizarTabla();
         }
 
         if(e.getSource() == vista.getBotonEditar()) {
-            if(archivoCargado.equals("")){
+            if(Empleados.archivoEmpleados.equals("")){
                 JOptionPane.showMessageDialog(null, "No se a cargado ningun archivo","Aviso", JOptionPane.INFORMATION_MESSAGE);
                 return;
             }else{
