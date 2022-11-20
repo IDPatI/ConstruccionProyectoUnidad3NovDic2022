@@ -79,6 +79,7 @@ public class ControladorVista  implements ActionListener{
             vistaModif.getBotonCancelar().addActionListener(this);
             vistaModif.getBotonActualizar().addActionListener(this);
             vistaModif.setFilaSeleccionada(filaSeleccionada);
+            vistaModif.setIdTitulo(String.valueOf(filaSeleccionada + 1));
         } else {
             JOptionPane.showMessageDialog(null, "Debes seleccionar una fila primero","Aviso", JOptionPane.INFORMATION_MESSAGE);
         }
@@ -135,14 +136,13 @@ public class ControladorVista  implements ActionListener{
         }
 
         if(e.getSource() == vistaModif.getBotonActualizar()) {
-            String fieldId = vistaModif.getId().getText();
             String fieldNombre = vistaModif.getNombre().getText();
             String fieldApellido = vistaModif.getApellido().getText();
             String fieldFoto = vistaModif.getFoto().getText();
-            if((fieldId.equals("") || fieldNombre.equals("") || fieldApellido.equals("") || fieldFoto.equals("")) == true) {
+            if((fieldNombre.equals("") || fieldApellido.equals("") || fieldFoto.equals("")) == true) {
                 JOptionPane.showMessageDialog(null, "Alguno de los campos esta vacío","Aviso", JOptionPane.INFORMATION_MESSAGE);
             } else {
-                actualizarFila(fieldId, fieldNombre, fieldApellido, fieldFoto, vistaModif.getFilaSeleccionada());
+                actualizarFila(String.valueOf(vistaModif.getFilaSeleccionada() + 1), fieldNombre, fieldApellido, fieldFoto, vistaModif.getFilaSeleccionada());
                 vistaModif.dispose();
             }
         }

@@ -2,8 +2,6 @@ package interfaz;
 
 import javax.swing.JButton;
 import javax.swing.JTextField;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
 
 /**
  *
@@ -17,14 +15,6 @@ public class VistaModificar extends javax.swing.JFrame {
     public VistaModificar() {
         initComponents();
         this.setLocationRelativeTo(null);
-        this.getId().addKeyListener(new KeyAdapter() {
-            public void keyTyped(KeyEvent e) {
-                char c = e.getKeyChar();
-                if ( ((c < '0') || (c > '9')) && (c != KeyEvent.VK_BACK_SPACE)) {
-                     e.consume();  // if it's not a number, ignore the event
-                }
-            }
-         });
     }
 
     /**
@@ -39,11 +29,9 @@ public class VistaModificar extends javax.swing.JFrame {
         tituloTabla = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
         jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
-        fieldId = new javax.swing.JTextField();
         fieldNombre = new javax.swing.JTextField();
         fieldApellido = new javax.swing.JTextField();
         fieldFoto = new javax.swing.JTextField();
@@ -57,8 +45,6 @@ public class VistaModificar extends javax.swing.JFrame {
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel1.setText("Inserta los nuevos datos del empleado");
-
-        jLabel2.setText("ID");
 
         jLabel3.setText("Nombre");
 
@@ -80,12 +66,10 @@ public class VistaModificar extends javax.swing.JFrame {
                         .addGap(102, 102, 102)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel4)
                             .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(fieldId)
                             .addComponent(fieldNombre)
                             .addComponent(fieldApellido)
                             .addComponent(fieldFoto, javax.swing.GroupLayout.DEFAULT_SIZE, 105, Short.MAX_VALUE)))
@@ -101,11 +85,11 @@ public class VistaModificar extends javax.swing.JFrame {
                             .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 367, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap(30, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
-                .addGap(47, 47, 47)
+                .addGap(48, 48, 48)
                 .addComponent(botonCancelar)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(botonActualizar)
-                .addGap(53, 53, 53))
+                .addGap(46, 46, 46))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -116,27 +100,23 @@ public class VistaModificar extends javax.swing.JFrame {
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel1)
-                .addGap(36, 36, 36)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(fieldId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel2))
-                .addGap(25, 25, 25)
+                .addGap(31, 31, 31)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
                     .addComponent(fieldNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(27, 27, 27)
+                .addGap(24, 24, 24)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(fieldApellido, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel4))
-                .addGap(27, 27, 27)
+                    .addComponent(jLabel4)
+                    .addComponent(fieldApellido, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(21, 21, 21)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
                     .addComponent(fieldFoto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 48, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 43, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(botonCancelar)
                     .addComponent(botonActualizar))
-                .addGap(32, 32, 32))
+                .addGap(27, 27, 27))
         );
 
         pack();
@@ -182,10 +162,8 @@ public class VistaModificar extends javax.swing.JFrame {
     private javax.swing.JButton botonCancelar;
     private javax.swing.JTextField fieldApellido;
     private javax.swing.JTextField fieldFoto;
-    private javax.swing.JTextField fieldId;
     private javax.swing.JTextField fieldNombre;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
@@ -193,10 +171,7 @@ public class VistaModificar extends javax.swing.JFrame {
     private javax.swing.JLabel tituloTabla;
     private int filaSeleccionada;
     // End of variables declaration                   
-
-    public JTextField getId() {
-        return fieldId;
-    }
+    
     
     public JTextField getNombre() {
         return fieldNombre;
@@ -217,7 +192,7 @@ public class VistaModificar extends javax.swing.JFrame {
     public JButton getBotonActualizar() {
         return botonActualizar;
     }
-
+    
     public void setFilaSeleccionada(int x) {
         this.filaSeleccionada = x;
     }
@@ -225,5 +200,11 @@ public class VistaModificar extends javax.swing.JFrame {
     public int getFilaSeleccionada() {
         return this.filaSeleccionada;
     }
+    
+    public void setIdTitulo(String id) {
+        tituloTabla.setText("Actualizar empleado con Id " + id);
+    }
+    
+    
     
 }
