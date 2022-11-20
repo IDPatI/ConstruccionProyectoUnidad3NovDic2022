@@ -14,7 +14,7 @@ Proyecto para probar el manejo de un flujo de trabajo
 ### Progreso de Entregas
 
 - [x]  Entrega 1🌑 
-- [ ]  Entrega 2🌒
+- [x]  Entrega 2🌒
 - [ ]  Entrega 3🌓
 - [ ]   Entrega 4🌔
 - [ ]    Entrega 5🌕
