@@ -14,6 +14,7 @@ import javax.swing.table.DefaultTableModel;
 
 import archivos.JsonParser;
 import archivos.LectorArchivos;
+import archivos.SaveImageFromUrl;
 import archivos.Validaciones;
 import modelo.Empleado;
 import modelo.Empleados;
@@ -31,6 +32,7 @@ public class ControladorVista  implements ActionListener{
         vista.getBotonCargar().addActionListener(this);
         vista.getBotonEditar().addActionListener(this);
         Empleados.archivoEmpleados = "";
+        vista.getTablaEmp().setDefaultRenderer(vista.getTablaEmp().getColumnClass(3), new TablaImagenes());
     }
     //Metodos de la pantalla principal
     public String seleccionarRuta(){
@@ -51,6 +53,7 @@ public class ControladorVista  implements ActionListener{
         Object[][] tabla = JsonParser.empleados(Empleados.jsonEmpleados);
         DefaultTableModel dtm = (DefaultTableModel)vista.getTablaEmp().getModel();
         dtm.setRowCount(0);
+        
         for (Object[] object : tabla) {
             dtm.addRow(object);
         }
