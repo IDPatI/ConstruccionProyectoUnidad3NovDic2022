@@ -108,14 +108,7 @@ public class ControladorVista  implements ActionListener{
         }
 
         if(e.getSource() == vista.getBotonEliminar()) {
-            int filaSeleccionada = vista.getTablaEmp().getSelectedRow();
-            if(filaSeleccionada != -1) {
-                DefaultTableModel dtm = (DefaultTableModel)vista.getTablaEmp().getModel();
-                dtm.removeRow(filaSeleccionada);
-                JOptionPane.showMessageDialog(null, "Se borro la fila correctamente");
-             } else {
-                JOptionPane.showMessageDialog(null, "No se ha seleccionado una fila","Aviso", JOptionPane.INFORMATION_MESSAGE);
-             }
+            eliminarAccion();
         }
 
         //Modificar, Acciones de la ventana Modificar
@@ -178,7 +171,6 @@ public class ControladorVista  implements ActionListener{
         }
     }
 
-
     public boolean verificarCamposModificar(){
         String fieldNombre = vistaModif.getNombre();
         String fieldApellido = vistaModif.getApellido();
@@ -189,6 +181,23 @@ public class ControladorVista  implements ActionListener{
         }else{
             return true;
         }
+    }
+
+    public void eliminarAccion(){
+        int filaSeleccionada = vista.getTablaEmp().getSelectedRow();
+        if(filaSeleccionada != -1) {
+            String id = (String)vista.getTablaEmp().getValueAt(filaSeleccionada, 0);
+            try {
+                Empleados.eliminarEmpleado(id);
+            } catch (IOException e) {
+                JOptionPane.showMessageDialog(null, "No se pudo modificar el archivo JSON","Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            actualizarTabla();
+            JOptionPane.showMessageDialog(null, "Se borro la fila correctamente");
+         } else {
+            JOptionPane.showMessageDialog(null, "No se ha seleccionado una fila","Aviso", JOptionPane.INFORMATION_MESSAGE);
+         }
     }
 
 
