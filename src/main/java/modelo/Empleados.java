@@ -55,6 +55,12 @@ public class Empleados {
     public static Empleado get(String id){
         return empleados.get(id);
     }
+    
+    public static void eliminarEmpleado(String id) throws IOException{
+        empleados.remove(id);
+        jsonEmpleados  = JsonParser.jsonEmpleados();
+        ModificadorArchivo.guardar(archivoEmpleados, jsonEmpleados.toString());
+    }
 
 
     private static JSONArray getListaEmpleados(){
