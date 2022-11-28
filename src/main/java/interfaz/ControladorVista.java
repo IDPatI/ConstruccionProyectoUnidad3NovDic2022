@@ -31,6 +31,7 @@ public class ControladorVista  implements ActionListener{
         vista.getBotonLimpiar().addActionListener(this);
         vista.getBotonCargar().addActionListener(this);
         vista.getBotonEditar().addActionListener(this);
+        vista.getBotonEliminar().addActionListener(this);
         Empleados.archivoEmpleados = "";
         vista.getTablaEmp().setDefaultRenderer(vista.getTablaEmp().getColumnClass(3), new TablaImagenes());
     }
@@ -106,10 +107,21 @@ public class ControladorVista  implements ActionListener{
             actualizarTabla();
         }
 
+        if(e.getSource() == vista.getBotonEliminar()) {
+            int filaSeleccionada = vista.getTablaEmp().getSelectedRow();
+            if(filaSeleccionada != -1) {
+                DefaultTableModel dtm = (DefaultTableModel)vista.getTablaEmp().getModel();
+                dtm.removeRow(filaSeleccionada);
+                JOptionPane.showMessageDialog(null, "Se borro la fila correctamente");
+             } else {
+                JOptionPane.showMessageDialog(null, "No se ha seleccionado una fila","Aviso", JOptionPane.INFORMATION_MESSAGE);
+             }
+        }
+
         //Modificar, Acciones de la ventana Modificar
         if(e.getSource() == vista.getBotonEditar()) {
             if(Empleados.archivoEmpleados.equals("")){
-                JOptionPane.showMessageDialog(null, "No se a cargado ningun archivo","Aviso", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(null, "No se ha cargado ningun archivo","Aviso", JOptionPane.INFORMATION_MESSAGE);
                 return;
             }else{
                 inicializarVistaModif();
