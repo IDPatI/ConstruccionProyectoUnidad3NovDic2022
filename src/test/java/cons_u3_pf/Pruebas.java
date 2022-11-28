@@ -2,6 +2,7 @@ package cons_u3_pf;
 
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -17,7 +18,7 @@ import modelo.Empleado;
 import modelo.Empleados;
 
 public class Pruebas {
-    private static final String rutaMia ="D:/Desktop/archivo.json"; 
+    private static final String rutaMia ="C:/Users/EQUIPO 1/Documents/prueba.json"; 
     @Test
     public void leerArchivo() throws Exception{
         String json = LectorArchivos.ObtenerContenido(rutaMia);
@@ -67,6 +68,17 @@ public class Pruebas {
         Empleado actual = Empleados.get("2");
         assertEquals(resultado.toString(), actual.toString());
 
+    }
+
+    @Test
+    public void pruebaEliminarEmpleado() throws Exception{
+        Empleados e  = new Empleados(rutaMia);
+        String antes = Empleados.jsonEmpleados.toString();
+        Empleados.eliminarEmpleado( "2");
+
+
+        System.out.println(Empleados.jsonEmpleados.toString());
+        assertNotEquals(antes, Empleados.jsonEmpleados.toString());
     }
 
 }
