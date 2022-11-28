@@ -2,6 +2,7 @@ package cons_u3_pf;
 
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -13,6 +14,7 @@ import org.junit.Test;
 import archivos.JsonParser;
 import archivos.LectorArchivos;
 import archivos.Validaciones;
+import modelo.Empleado;
 import modelo.Empleados;
 
 public class Pruebas {
@@ -55,8 +57,28 @@ public class Pruebas {
     @Test
     public void pruebaModificarEmpleado() throws Exception{
         Empleados e  = new Empleados(rutaMia);
-        e.modificarEmpleado("2","David Alberto", "Pat Cituk", "https://cdn.discordapp.com/attachments/903704345747525737/1017236782292684900/DPat_A_beautiful_painting_of_a_big_purple_sci-fi_Gate_ea4dcb4d-aa2e-4476-b94c-df4156ad2d65.png");
+        Empleado resultado = new Empleado();
+        resultado.firstName = "David Alberto";
+        resultado.lastName = "Pat Cituk";
+        resultado.photo = "https://cdn.discordapp.com/attachments/903704345747525737/1017236782292684900/DPat_A_beautiful_painting_of_a_big_purple_sci-fi_Gate_ea4dcb4d-aa2e-4476-b94c-df4156ad2d65.png";
 
+
+        
+        e.modificarEmpleado("2","David Alberto", "Pat Cituk", "https://cdn.discordapp.com/attachments/903704345747525737/1017236782292684900/DPat_A_beautiful_painting_of_a_big_purple_sci-fi_Gate_ea4dcb4d-aa2e-4476-b94c-df4156ad2d65.png");
+        Empleado actual = Empleados.get("2");
+        assertEquals(resultado.toString(), actual.toString());
+
+    }
+
+    @Test
+    public void pruebaEliminarEmpleado() throws Exception{
+        Empleados e  = new Empleados(rutaMia);
+        String antes = Empleados.jsonEmpleados.toString();
+        Empleados.eliminarEmpleado( "2");
+
+
+        System.out.println(Empleados.jsonEmpleados.toString());
+        assertNotEquals(antes, Empleados.jsonEmpleados.toString());
     }
 
 }

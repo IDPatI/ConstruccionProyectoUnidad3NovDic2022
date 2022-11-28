@@ -4,12 +4,15 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.swing.JOptionPane;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import archivos.JsonParser;
 import archivos.LectorArchivos;
 import archivos.ModificadorArchivo;
+import archivos.SaveImageFromUrl;
 
 public class Empleados {
     public static JSONObject jsonEmpleados;
@@ -34,6 +37,7 @@ public class Empleados {
             empleadoA.lastName = lastName;
             empleadoA.photo = photo;
             empleados.put(id, empleadoA);
+            guardarImagen(id);
         }
     }
 
@@ -43,6 +47,7 @@ public class Empleados {
         empleadoM.lastName = lastName;
         empleadoM.photo = photo;
         empleados.put(id, empleadoM);
+        guardarImagen(id);
         jsonEmpleados  = JsonParser.jsonEmpleados();
         ModificadorArchivo.guardar(archivoEmpleados, jsonEmpleados.toString());
     }
@@ -50,10 +55,27 @@ public class Empleados {
     public static Empleado get(String id){
         return empleados.get(id);
     }
+    
+    public static void eliminarEmpleado(String id) throws IOException{
+        empleados.remove(id);
+        jsonEmpleados  = JsonParser.jsonEmpleados();
+        ModificadorArchivo.guardar(archivoEmpleados, jsonEmpleados.toString());
+    }
 
 
     private static JSONArray getListaEmpleados(){
         return jsonEmpleados.getJSONObject("employees").getJSONArray("employee");
+    }
+    private static void guardarImagen(String id){
+        Empleado em = empleados.get(id);
+        String direccion = "src/imagenes/"+ id +".jpg";
+        System.out.println(id);
+        try {
+            SaveImageFromUrl.saveImage(em.photo, direccion);
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(null, "No se pudo cargar imagen:\n" + em.photo  ,"Error", JOptionPane.ERROR_MESSAGE);
+        }
+
     }
 
 
