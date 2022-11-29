@@ -2,6 +2,7 @@ package cons_u3_pf;
 
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -67,6 +68,17 @@ public class Pruebas {
         Empleado actual = Empleados.get("2");
         assertEquals(resultado.toString(), actual.toString());
 
+    }
+
+    @Test
+    public void pruebaEliminarEmpleado() throws Exception{
+        Empleados e  = new Empleados(rutaMia);
+        int antes = Empleados.empleados.size();
+        Empleados.eliminarEmpleado( "5");
+
+
+        System.out.println(Empleados.jsonEmpleados.toString());
+        assertEquals(antes-1, Empleados.empleados.size());
     }
 
 }
