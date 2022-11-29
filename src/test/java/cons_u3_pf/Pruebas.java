@@ -18,7 +18,7 @@ import modelo.Empleado;
 import modelo.Empleados;
 
 public class Pruebas {
-    private static final String rutaMia ="C:/Users/EQUIPO 1/Documents/prueba.json"; 
+    private static final String rutaMia ="D:/Desktop/archivo.json"; 
     @Test
     public void leerArchivo() throws Exception{
         String json = LectorArchivos.ObtenerContenido(rutaMia);
@@ -73,12 +73,12 @@ public class Pruebas {
     @Test
     public void pruebaEliminarEmpleado() throws Exception{
         Empleados e  = new Empleados(rutaMia);
-        String antes = Empleados.jsonEmpleados.toString();
-        Empleados.eliminarEmpleado( "2");
+        int antes = Empleados.empleados.size();
+        Empleados.eliminarEmpleado( "5");
 
 
         System.out.println(Empleados.jsonEmpleados.toString());
-        assertNotEquals(antes, Empleados.jsonEmpleados.toString());
+        assertEquals(antes-1, Empleados.empleados.size());
     }
 
 }
