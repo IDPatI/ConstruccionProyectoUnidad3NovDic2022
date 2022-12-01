@@ -2,7 +2,7 @@ package interfaz;
 
 import javax.swing.JButton;
 import javax.swing.JTable;
-import javax.swing.table.DefaultTableModel;
+
 
 /**
  *
@@ -43,6 +43,7 @@ public class VistaDatos extends javax.swing.JFrame {
         botonCargar = new javax.swing.JButton();
         botonEditar = new javax.swing.JButton();
         botonEliminar = new javax.swing.JButton();
+        botonAgregar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -74,9 +75,11 @@ public class VistaDatos extends javax.swing.JFrame {
 
         botonCargar.setText("Cargar Archivo");
 
-        botonEditar.setText("Modificar tabla");
+        botonEditar.setText("Modificar empleado");
 
         botonEliminar.setText("Eliminar empleado");
+
+        botonAgregar.setText("Agregar empleado");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -96,17 +99,15 @@ public class VistaDatos extends javax.swing.JFrame {
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
                                 .addGap(9, 9, 9)
                                 .addComponent(botonLimpiar, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(144, 144, 144)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(botonEditar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(botonCargar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(148, 148, 148)
-                                .addComponent(botonCargar)
-                                .addGap(150, 150, 150)
-                                .addComponent(botonEditar)
-                                .addGap(24, 24, 24))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(botonEliminar)
-                                .addGap(14, 14, 14)))))
+                            .addComponent(botonAgregar, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(botonEliminar, javax.swing.GroupLayout.Alignment.TRAILING))
+                        .addGap(14, 14, 14)))
                 .addGap(0, 61, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -120,12 +121,13 @@ public class VistaDatos extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(botonMostrar)
                     .addComponent(botonCargar)
-                    .addComponent(botonEditar))
-                .addGap(18, 18, 18)
+                    .addComponent(botonAgregar))
+                .addGap(21, 21, 21)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(botonLimpiar)
-                    .addComponent(botonEliminar))
-                .addContainerGap(17, Short.MAX_VALUE))
+                    .addComponent(botonEliminar)
+                    .addComponent(botonEditar))
+                .addContainerGap(14, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -179,6 +181,7 @@ public class VistaDatos extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify                     
+    private javax.swing.JButton botonAgregar;
     private javax.swing.JButton botonCargar;
     private javax.swing.JButton botonEditar;
     private javax.swing.JButton botonEliminar;
@@ -212,5 +215,9 @@ public class VistaDatos extends javax.swing.JFrame {
     
     public JButton getBotonEliminar() {
         return botonEliminar;
+    }
+    
+    public JButton getBotonAgregar() {
+        return botonAgregar;
     }
 }
