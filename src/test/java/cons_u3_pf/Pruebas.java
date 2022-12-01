@@ -4,6 +4,7 @@ package cons_u3_pf;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Arrays;
@@ -18,7 +19,7 @@ import modelo.Empleado;
 import modelo.Empleados;
 
 public class Pruebas {
-    private static final String rutaMia ="C:/Users/EQUIPO 1/Documents/prueba.json"; 
+    private static final String rutaMia ="C:/Users/a17003603/Downloads/prueba.json"; 
     @Test
     public void leerArchivo() throws Exception{
         String json = LectorArchivos.ObtenerContenido(rutaMia);
@@ -64,7 +65,7 @@ public class Pruebas {
 
 
         
-        e.modificarEmpleado("2","David Alberto", "Pat Cituk", "https://cdn.discordapp.com/attachments/903704345747525737/1017236782292684900/DPat_A_beautiful_painting_of_a_big_purple_sci-fi_Gate_ea4dcb4d-aa2e-4476-b94c-df4156ad2d65.png");
+        Empleados.modificarEmpleado("2","David Alberto", "Pat Cituk", "https://cdn.discordapp.com/attachments/903704345747525737/1017236782292684900/DPat_A_beautiful_painting_of_a_big_purple_sci-fi_Gate_ea4dcb4d-aa2e-4476-b94c-df4156ad2d65.png");
         Empleado actual = Empleados.get("2");
         assertEquals(resultado.toString(), actual.toString());
 
@@ -73,12 +74,19 @@ public class Pruebas {
     @Test
     public void pruebaEliminarEmpleado() throws Exception{
         Empleados e  = new Empleados(rutaMia);
-        String antes = Empleados.jsonEmpleados.toString();
-        Empleados.eliminarEmpleado( "2");
+        int antes = Empleados.empleados.size();
+        Empleados.eliminarEmpleado( "5");
 
 
         System.out.println(Empleados.jsonEmpleados.toString());
-        assertNotEquals(antes, Empleados.jsonEmpleados.toString());
+        assertEquals(antes-1, Empleados.empleados.size());
     }
+
+    @Test 
+    public void empleadoNoExiste() throws Exception{
+        Empleados e  = new Empleados(rutaMia);
+        assertNull(Empleados.get("a"));
+    }
+
 
 }
