@@ -138,7 +138,9 @@ public class ControladorVista  implements ActionListener{
         }
 
         if(e.getSource() == vistaAgregar.getBotonActualizar()){
-            agregarEmpleado();
+            if(verificarCamposAgregar()){
+                agregarAccion();
+            }
         }
 
         if(e.getSource() == vistaAgregar.getBotonCancelar()){
@@ -153,11 +155,6 @@ public class ControladorVista  implements ActionListener{
         vistaAgregar.setVisible(true);
         vistaAgregar.getBotonActualizar().addActionListener(this);
         vistaAgregar.getBotonCancelar().addActionListener(this);
-    }
-
-    public void agregarEmpleado() {
-        if(verificarCamposAgregar()) {
-        }
     }
 
     public void inicializarVistaModif() {
@@ -220,6 +217,21 @@ public class ControladorVista  implements ActionListener{
             return false;
         }else{
             return true;
+        }
+    }
+
+    public void agregarAccion(){
+        String fieldId = vistaAgregar.getId();
+        String fieldNombre = vistaAgregar.getNombre();
+        String fieldApellido = vistaAgregar.getApellido();
+        String fieldFoto = vistaAgregar.getFoto(); 
+
+        try {
+            Empleados.agregarEmpleado(fieldId, fieldNombre, fieldApellido, fieldFoto);
+            actualizarTabla();
+            vistaAgregar.setVisible(false);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e.getMessage(),"Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
