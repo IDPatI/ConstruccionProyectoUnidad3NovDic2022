@@ -2,19 +2,14 @@ package interfaz;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.Scanner;
 
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
-import javax.swing.JTable;
-import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
 import archivos.JsonParser;
 import archivos.LectorArchivos;
-import archivos.SaveImageFromUrl;
 import archivos.Validaciones;
 import modelo.Empleado;
 import modelo.Empleados;
@@ -22,16 +17,19 @@ import modelo.Empleados;
 public class ControladorVista  implements ActionListener{
     public static VistaDatos vista;
     private VistaModificar vistaModif;
+    private VistaAgregar vistaAgregar;
 
     public ControladorVista() {
         vista = new VistaDatos();
         vistaModif = new VistaModificar();
+        vistaAgregar = new VistaAgregar();
         vista.setVisible(true);
         vista.getBotonMostrar().addActionListener(this);
         vista.getBotonLimpiar().addActionListener(this);
         vista.getBotonCargar().addActionListener(this);
         vista.getBotonEditar().addActionListener(this);
         vista.getBotonEliminar().addActionListener(this);
+        vista.getBotonAgregar().addActionListener(this);
         Empleados.archivoEmpleados = "";
         vista.getTablaEmp().setDefaultRenderer(vista.getTablaEmp().getColumnClass(3), new TablaImagenes());
     }
@@ -128,11 +126,36 @@ public class ControladorVista  implements ActionListener{
         if(e.getSource() == vistaModif.getBotonActualizar()) {
             modificarAccion();
         }
-        
+
+        //Agregar, Acciones de la ventana Agregar
+        if(e.getSource() == vista.getBotonAgregar()) {
+            if(Empleados.archivoEmpleados.equals("")){
+                JOptionPane.showMessageDialog(null, "No se ha cargado ningun archivo","Aviso", JOptionPane.INFORMATION_MESSAGE);
+                return;
+            }else{
+                inicializarVistaAgregar();
+            }
+        }
+
+        if(e.getSource() == vistaAgregar.getBotonActualizar()){
+            if(verificarCamposAgregar()){
+                agregarAccion();
+            }
+        }
+
+        if(e.getSource() == vistaAgregar.getBotonCancelar()){
+            vistaAgregar.dispose();
+        }
     }
 
 
     //Metodos Modificar
+
+    public void inicializarVistaAgregar() {
+        vistaAgregar.setVisible(true);
+        vistaAgregar.getBotonActualizar().addActionListener(this);
+        vistaAgregar.getBotonCancelar().addActionListener(this);
+    }
 
     public void inicializarVistaModif() {
         int filaSeleccionada = vista.getTablaEmp().getSelectedRow();
@@ -154,6 +177,7 @@ public class ControladorVista  implements ActionListener{
         }
         
     }
+
 
     public void modificarAccion(){
         String fieldNombre = vistaModif.getNombre();
@@ -180,6 +204,34 @@ public class ControladorVista  implements ActionListener{
             return false;
         }else{
             return true;
+        }
+    }
+ 
+    public boolean verificarCamposAgregar() {
+        String fieldId = vistaAgregar.getId();
+        String fieldNombre = vistaAgregar.getNombre();
+        String fieldApellido = vistaAgregar.getApellido();
+        String fieldFoto = vistaAgregar.getFoto(); 
+        if((fieldId.equals("") || fieldNombre.equals("") || fieldApellido.equals("") || fieldFoto.equals("")) == true){
+            JOptionPane.showMessageDialog(null, "Alguno de los campos esta vacío","Aviso", JOptionPane.INFORMATION_MESSAGE);
+            return false;
+        }else{
+            return true;
+        }
+    }
+
+    public void agregarAccion(){
+        String fieldId = vistaAgregar.getId();
+        String fieldNombre = vistaAgregar.getNombre();
+        String fieldApellido = vistaAgregar.getApellido();
+        String fieldFoto = vistaAgregar.getFoto(); 
+
+        try {
+            Empleados.agregarEmpleado(fieldId, fieldNombre, fieldApellido, fieldFoto);
+            actualizarTabla();
+            vistaAgregar.setVisible(false);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e.getMessage(),"Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
