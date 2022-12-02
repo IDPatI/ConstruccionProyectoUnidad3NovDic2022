@@ -4,6 +4,7 @@ package cons_u3_pf;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -19,7 +20,7 @@ import modelo.Empleado;
 import modelo.Empleados;
 
 public class Pruebas {
-    private static final String rutaMia ="C:/Users/a17003603/Downloads/prueba.json"; 
+    private static final String rutaMia ="C:/Users/EQUIPO 1/Documents/prueba.json"; 
     @Test
     public void leerArchivo() throws Exception{
         String json = LectorArchivos.ObtenerContenido(rutaMia);
@@ -86,6 +87,15 @@ public class Pruebas {
     public void empleadoNoExiste() throws Exception{
         Empleados e  = new Empleados(rutaMia);
         assertNull(Empleados.get("a"));
+    }
+    @Test
+    public void pruebaAgregarEmpleado() throws Exception{
+        Empleados e  = new Empleados(rutaMia);
+        int antes = Empleados.empleados.size();
+        Empleados.agregarEmpleado("300","Juan Pablo","Lopez Gomez", "https://pm1.narvii.com/6816/dd22c64d72a430978a187bdfcf795f8c01616773v2_hq.jpg");
+        System.out.println(Empleados.jsonEmpleados.toString());
+        assertEquals(antes+1, Empleados.empleados.size());
+        assertNotNull(Empleados.get("300"));
     }
 
 
