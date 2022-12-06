@@ -52,6 +52,20 @@ public class Empleados {
         ModificadorArchivo.guardar(archivoEmpleados, jsonEmpleados.toString());
     }
 
+    public static void agregarEmpleado(String id,String firstName, String lastName, String photo) throws Exception{
+        if(Empleados.get(id)!=null){
+            throw new Exception("Ya existe un empleado con este Id");
+        }
+        Empleado empleadoM = new Empleado();
+        empleadoM.firstName = firstName;
+        empleadoM.lastName = lastName;
+        empleadoM.photo = photo;
+        empleados.put(id, empleadoM);
+        guardarImagen(id);
+        jsonEmpleados  = JsonParser.jsonEmpleados();
+        ModificadorArchivo.guardar(archivoEmpleados, jsonEmpleados.toString());
+    }
+
     public static Empleado get(String id){
         return empleados.get(id);
     }

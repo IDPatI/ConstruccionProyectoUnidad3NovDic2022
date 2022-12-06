@@ -4,6 +4,8 @@ package cons_u3_pf;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Arrays;
@@ -18,7 +20,7 @@ import modelo.Empleado;
 import modelo.Empleados;
 
 public class Pruebas {
-    private static final String rutaMia ="D:/Desktop/archivo.json"; 
+    private static final String rutaMia ="C:/Users/EQUIPO 1/Documents/prueba.json"; 
     @Test
     public void leerArchivo() throws Exception{
         String json = LectorArchivos.ObtenerContenido(rutaMia);
@@ -64,7 +66,7 @@ public class Pruebas {
 
 
         
-        e.modificarEmpleado("2","David Alberto", "Pat Cituk", "https://cdn.discordapp.com/attachments/903704345747525737/1017236782292684900/DPat_A_beautiful_painting_of_a_big_purple_sci-fi_Gate_ea4dcb4d-aa2e-4476-b94c-df4156ad2d65.png");
+        Empleados.modificarEmpleado("2","David Alberto", "Pat Cituk", "https://cdn.discordapp.com/attachments/903704345747525737/1017236782292684900/DPat_A_beautiful_painting_of_a_big_purple_sci-fi_Gate_ea4dcb4d-aa2e-4476-b94c-df4156ad2d65.png");
         Empleado actual = Empleados.get("2");
         assertEquals(resultado.toString(), actual.toString());
 
@@ -80,5 +82,21 @@ public class Pruebas {
         System.out.println(Empleados.jsonEmpleados.toString());
         assertEquals(antes-1, Empleados.empleados.size());
     }
+
+    @Test 
+    public void empleadoNoExiste() throws Exception{
+        Empleados e  = new Empleados(rutaMia);
+        assertNull(Empleados.get("a"));
+    }
+    @Test
+    public void pruebaAgregarEmpleado() throws Exception{
+        Empleados e  = new Empleados(rutaMia);
+        int antes = Empleados.empleados.size();
+        Empleados.agregarEmpleado("300","Juan Pablo","Lopez Gomez", "https://pm1.narvii.com/6816/dd22c64d72a430978a187bdfcf795f8c01616773v2_hq.jpg");
+        System.out.println(Empleados.jsonEmpleados.toString());
+        assertEquals(antes+1, Empleados.empleados.size());
+        assertNotNull(Empleados.get("300"));
+    }
+
 
 }
