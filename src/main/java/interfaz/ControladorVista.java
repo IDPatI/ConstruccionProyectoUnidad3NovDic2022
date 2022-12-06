@@ -30,6 +30,8 @@ public class ControladorVista  implements ActionListener{
         vista.getBotonEditar().addActionListener(this);
         vista.getBotonEliminar().addActionListener(this);
         vista.getBotonAgregar().addActionListener(this);
+        vistaAgregar.getBotonActualizar().addActionListener(this);
+        vistaAgregar.getBotonCancelar().addActionListener(this);
         Empleados.archivoEmpleados = "";
         vista.getTablaEmp().setDefaultRenderer(vista.getTablaEmp().getColumnClass(3), new TablaImagenes());
     }
@@ -153,8 +155,7 @@ public class ControladorVista  implements ActionListener{
 
     public void inicializarVistaAgregar() {
         vistaAgregar.setVisible(true);
-        vistaAgregar.getBotonActualizar().addActionListener(this);
-        vistaAgregar.getBotonCancelar().addActionListener(this);
+
     }
 
     public void inicializarVistaModif() {
