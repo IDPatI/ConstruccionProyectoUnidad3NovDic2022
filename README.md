@@ -17,4 +17,4 @@ Proyecto para probar el manejo de un flujo de trabajo
 - [x]  Entrega 2🌒
 - [x]  Entrega 3🌓
 - [x]   Entrega 4🌔
-- [ ]    Entrega 5🌕
+- [x]    Entrega 5🌕
